@@ -18,22 +18,22 @@ export const DialogsAndPopupsModule: React.FC = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const triggerAlert = () => {
-    window.alert('🚨 Certified Gen Z Alert: No Cap Detected!');
+    window.alert('System Notification: Action completed successfully.');
   };
 
   const triggerConfirm = () => {
-    const res = window.confirm('Are you absolutely sure you want to delete your cringe history?');
-    setConfirmResult(res ? 'Confirmed: History NUKED 💀' : 'Dismissed: Cringe preserved 🦄');
+    const res = window.confirm('Are you sure you want to permanently delete this record?');
+    setConfirmResult(res ? 'Confirmed: Record Deleted' : 'Dismissed: Deletion Cancelled');
   };
 
   const triggerPrompt = () => {
-    const answer = window.prompt('Enter your legendary gamer tag:', 'SigmaCoder99');
+    const answer = window.prompt('Enter operator identifier:', 'admin_karthik');
     setPromptResult(answer !== null ? `Submitted: "${answer}"` : 'Prompt Cancelled');
   };
 
   const showToast = (type: 'success' | 'warn') => {
     const id = Date.now();
-    const msg = type === 'success' ? '⚡ Action executed successfully!' : '⚠️ Warning: High sodium levels detected!';
+    const msg = type === 'success' ? 'Operation executed successfully.' : 'Warning: Resource limit approaching threshold.';
     setToasts(prev => [...prev, { id, msg, type }]);
     setTimeout(() => {
       setToasts(prev => prev.filter(t => t.id !== id));
@@ -60,31 +60,10 @@ export const DialogsAndPopupsModule: React.FC = () => {
       {/* 1. Native Browser Dialogs */}
       <ChallengeCard
         id="native-dialogs"
-        badge="🚨 DIALOGS"
+        badge="DIALOGS"
         badgeColor="pink"
         title="Native Alerts, Confirms & Prompts"
-        description="Handle native browser dialogs using page.on('dialog') listener before triggering the event."
-        playwrightCode={`// 1. Handling window.alert
-page.once('dialog', async dialog => {
-  expect(dialog.message()).toContain('No Cap');
-  await dialog.accept();
-});
-await page.getByTestId('btn-native-alert').click();
-
-// 2. Handling window.confirm (Accept or Dismiss)
-page.once('dialog', async dialog => {
-  await dialog.accept(); // or dialog.dismiss()
-});
-await page.getByTestId('btn-native-confirm').click();
-await expect(page.getByTestId('confirm-result-display')).toContainText('NUKED');
-
-// 3. Handling window.prompt
-page.once('dialog', async dialog => {
-  await dialog.accept('RizzlerMaster');
-});
-await page.getByTestId('btn-native-prompt').click();
-await expect(page.getByTestId('prompt-result-display')).toContainText('RizzlerMaster');`}
-        playwrightTip="Crucial: Register page.on('dialog') BEFORE clicking the button that triggers the alert, otherwise Playwright will auto-dismiss it!"
+        description="Verify handling of browser native alert(), confirm(), and prompt() dialogs."
       >
         <div className="space-y-3">
           <div className="flex flex-wrap gap-2">
@@ -121,22 +100,10 @@ await expect(page.getByTestId('prompt-result-display')).toContainText('RizzlerMa
       {/* 2. Custom Accessible Modals & Nested Modals */}
       <ChallengeCard
         id="custom-modals"
-        badge="🪟 MODALS"
+        badge="MODALS"
         badgeColor="purple"
         title="Custom Modals & Focus Trap"
-        description="Interact with accessible HTML modals, backdrop dismissal, Escape hotkey, and nested modals."
-        playwrightCode={`// 1. Open primary modal
-await page.getByTestId('btn-open-modal').click();
-await expect(page.getByTestId('modal-dialog')).toBeVisible();
-
-// 2. Open nested sub-modal
-await page.getByTestId('btn-open-nested-modal').click();
-await expect(page.getByTestId('nested-modal-dialog')).toBeVisible();
-
-// 3. Close with Escape key
-await page.keyboard.press('Escape');
-await expect(page.getByTestId('nested-modal-dialog')).toBeHidden();`}
-        playwrightTip="Use page.keyboard.press('Escape') to test keyboard accessibility on custom dialogs."
+        description="Interact with accessible HTML dialogs, backdrop dismissal, Escape hotkey, and nested modals."
       >
         <div className="space-y-3">
           <div className="flex gap-2">
@@ -145,7 +112,7 @@ await expect(page.getByTestId('nested-modal-dialog')).toBeHidden();`}
               onClick={() => setIsModalOpen(true)}
               className="btn-neo-green text-xs py-2 px-4"
             >
-              Open VIP Modal 🪟
+              Open Primary Modal 🪟
             </button>
             <button
               data-testid="btn-open-drawer"
@@ -177,9 +144,9 @@ await expect(page.getByTestId('nested-modal-dialog')).toBeHidden();`}
                 >
                   <X className="w-5 h-5" />
                 </button>
-                <h4 className="text-base font-bold text-[#00F5D4] mb-2">Level 1 Secret Chamber</h4>
+                <h4 className="text-base font-bold text-[#00F5D4] mb-2">Primary Modal Dialog</h4>
                 <p className="text-xs text-slate-300 mb-4">
-                  You are inside the accessible modal. Press ESC or click backdrop to exit.
+                  Accessible modal dialog with backdrop dismiss and Escape key binding.
                 </p>
                 <div className="flex justify-between items-center">
                   <button
@@ -187,7 +154,7 @@ await expect(page.getByTestId('nested-modal-dialog')).toBeHidden();`}
                     onClick={() => setIsNestedModalOpen(true)}
                     className="btn-neo-yellow text-xs py-1.5 px-3"
                   >
-                    Open Inception Modal 🌀
+                    Open Sub-Modal 🌀
                   </button>
                   <button
                     data-testid="btn-modal-action"
@@ -201,7 +168,7 @@ await expect(page.getByTestId('nested-modal-dialog')).toBeHidden();`}
             </div>
           )}
 
-          {/* Nested Inception Modal */}
+          {/* Nested Sub-Modal */}
           {isNestedModalOpen && (
             <div
               data-testid="nested-modal-backdrop"
@@ -212,14 +179,14 @@ await expect(page.getByTestId('nested-modal-dialog')).toBeHidden();`}
                 data-testid="nested-modal-dialog"
                 className="bg-[#11141C] border-2 border-[#FEE440] rounded-xl p-5 max-w-xs w-full shadow-brutal text-white relative"
               >
-                <h5 className="text-sm font-bold text-[#FEE440] mb-2">🌀 Inception Level 2</h5>
-                <p className="text-xs text-slate-300 mb-3">Deepest layer of the modal tree.</p>
+                <h5 className="text-sm font-bold text-[#FEE440] mb-2">Sub-Level Modal (Level 2)</h5>
+                <p className="text-xs text-slate-300 mb-3">Nested child dialog requiring secondary confirmation.</p>
                 <button
                   data-testid="btn-close-nested-modal"
                   onClick={() => setIsNestedModalOpen(false)}
                   className="btn-neo-yellow text-xs py-1 px-3 w-full"
                 >
-                  Exit Inception
+                  Close Sub-Modal
                 </button>
               </div>
             </div>
@@ -239,7 +206,7 @@ await expect(page.getByTestId('nested-modal-dialog')).toBeHidden();`}
               >
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <h4 className="font-bold text-white text-sm">Slide-out Drawer</h4>
+                    <h4 className="font-bold text-white text-sm">Slide-out Navigation Drawer</h4>
                     <button
                       data-testid="btn-close-drawer"
                       onClick={() => setIsDrawerOpen(false)}
@@ -269,19 +236,10 @@ await expect(page.getByTestId('nested-modal-dialog')).toBeHidden();`}
       <div className="md:col-span-2">
         <ChallengeCard
           id="toast-notifications"
-          badge="🍞 TOASTS"
+          badge="NOTIFICATIONS"
           badgeColor="yellow"
           title="Toast Notifications & Auto-Dismiss"
-          description="Spawn temporary snackbars and test visibility before and after auto-dismissal."
-          playwrightCode={`// Spawn toast and assert visibility
-await page.getByTestId('btn-spawn-toast-success').click();
-const toast = page.getByTestId('toast-notification');
-await expect(toast).toBeVisible();
-await expect(toast).toContainText('Action executed successfully');
-
-// Wait for auto-dismiss (4s)
-await expect(toast).toBeHidden({ timeout: 6000 });`}
-          playwrightTip="Toast messages often have role='status' or role='alert' for screen reader announcements."
+          description="Spawn temporary toast alerts and verify visibility before and after auto-dismissal."
         >
           <div className="flex items-center gap-3">
             <button
@@ -289,14 +247,14 @@ await expect(toast).toBeHidden({ timeout: 6000 });`}
               onClick={() => showToast('success')}
               className="btn-neo-green text-xs py-2 px-3"
             >
-              Spawn Success Toast 🟢
+              Trigger Success Toast 🟢
             </button>
             <button
               data-testid="btn-spawn-toast-warn"
               onClick={() => showToast('warn')}
               className="btn-neo-pink text-xs py-2 px-3"
             >
-              Spawn Warning Toast 🔴
+              Trigger Warning Toast 🔴
             </button>
           </div>
 

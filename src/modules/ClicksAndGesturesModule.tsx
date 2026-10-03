@@ -10,17 +10,12 @@ export const ClicksAndGesturesModule: React.FC = () => {
   const [isHovered, setIsHovered] = useState(false);
   const [activeModifiers, setActiveModifiers] = useState<string[]>([]);
   const [clickCoords, setClickCoords] = useState<{ x: number; y: number } | null>(null);
-  
-  // Long press
-  const [longPressActive, setLongPressActive] = useState(false);
-  const [longPressSuccess, setLongPressSuccess] = useState(false);
-  const longPressTimer = useRef<NodeJS.Timeout | null>(null);
 
   // Drag and Drop (Kanban)
   const [columns, setColumns] = useState<{ [key: string]: string[] }>({
-    todo: ['Cook E2E Tests', 'Fix Flaky Spec'],
-    progress: ['Binge Anime'],
-    done: ['Touch Grass']
+    todo: ['Develop E2E Suite', 'Fix Regression Bug'],
+    progress: ['Review Pull Request'],
+    done: ['Ship Production Release']
   });
   const [draggedItem, setDraggedItem] = useState<{ item: string; fromCol: string } | null>(null);
 
@@ -107,35 +102,23 @@ export const ClicksAndGesturesModule: React.FC = () => {
       {/* 1. Multi-Click & Context Menu */}
       <ChallengeCard
         id="clicks-and-context"
-        badge="🖱️ CLICKS"
+        badge="CLICKS"
         badgeColor="pink"
-        title="Double Click & Right Click"
-        description="Trigger dblclick events, open custom right-click context menus, and inspect selected actions."
-        playwrightCode={`// 1. Double Click
-await page.getByTestId('btn-double-click').dblclick();
-await expect(page.getByTestId('double-click-score')).toHaveText('1');
-
-// 2. Right Click (Context Menu)
-await page.getByTestId('right-click-zone').click({ button: 'right' });
-await expect(page.getByTestId('context-menu')).toBeVisible();
-
-// 3. Click menu item
-await page.getByTestId('menu-item-rizz').click();
-await expect(page.getByTestId('context-action-result')).toContainText('Mega Rizz Activated');`}
-        playwrightTip="Use { button: 'right' } to trigger the contextmenu event in Playwright."
+        title="Double Click & Right Click Menu"
+        description="Trigger double-click counters and custom right-click context menu selections."
       >
         <div className="space-y-4">
           <div className="flex items-center justify-between p-3 bg-[#161B26] rounded-lg border border-slate-800">
             <div>
-              <div className="text-xs font-bold text-white">Double Click Frenzy</div>
-              <div className="text-[11px] text-slate-400">Score: <span data-testid="double-click-score" className="text-[#FF4365] font-mono font-bold">{doubleClickCount}</span></div>
+              <div className="text-xs font-bold text-white">Double Click Action</div>
+              <div className="text-[11px] text-slate-400">Counter: <span data-testid="double-click-score" className="text-[#FF4365] font-mono font-bold">{doubleClickCount}</span></div>
             </div>
             <button
               data-testid="btn-double-click"
               onDoubleClick={() => setDoubleClickCount(prev => prev + 1)}
               className="btn-neo-pink text-xs py-1.5 px-3"
             >
-              Double Tap Me ⚡
+              Double Click Here
             </button>
           </div>
 
@@ -147,7 +130,7 @@ await expect(page.getByTestId('context-action-result')).toContainText('Mega Rizz
             }}
             className="relative h-28 border-2 border-dashed border-slate-700 rounded-lg bg-[#0C101A] flex flex-col items-center justify-center cursor-context-menu select-none p-2"
           >
-            <span className="text-xs font-mono text-slate-400">Right Click anywhere inside this zone</span>
+            <span className="text-xs font-mono text-slate-400">Right click anywhere inside this boundary</span>
             {contextAction && (
               <span data-testid="context-action-result" className="text-xs font-mono text-[#00F5D4] mt-1 font-bold">
                 Action: {contextAction}
@@ -158,21 +141,21 @@ await expect(page.getByTestId('context-action-result')).toContainText('Mega Rizz
               <div
                 data-testid="context-menu"
                 style={{ top: contextMenuPos.y, left: contextMenuPos.x }}
-                className="absolute z-20 bg-[#161B26] border-2 border-black rounded-lg shadow-brutal p-1.5 w-44 font-mono text-xs text-white"
+                className="absolute z-20 bg-[#161B26] border-2 border-black rounded-lg shadow-brutal p-1.5 w-48 font-mono text-xs text-white"
               >
                 <div
                   data-testid="menu-item-rizz"
-                  onClick={() => { setContextAction('Mega Rizz Activated'); setContextMenuPos(null); }}
+                  onClick={() => { setContextAction('Parameters Boosted'); setContextMenuPos(null); }}
                   className="px-2 py-1.5 hover:bg-[#FF4365] hover:text-white rounded cursor-pointer"
                 >
-                  ⚡ Boost Rizz
+                  ⚡ Boost Parameters
                 </div>
                 <div
                   data-testid="menu-item-delulu"
-                  onClick={() => { setContextAction('Delulu Cleansed'); setContextMenuPos(null); }}
+                  onClick={() => { setContextAction('Settings Reset'); setContextMenuPos(null); }}
                   className="px-2 py-1.5 hover:bg-[#00F5D4] hover:text-black rounded cursor-pointer"
                 >
-                  🦄 Clear Delulu
+                  🔄 Reset Settings
                 </div>
               </div>
             )}
@@ -183,22 +166,10 @@ await expect(page.getByTestId('context-action-result')).toContainText('Mega Rizz
       {/* 2. Hover & Modifiers */}
       <ChallengeCard
         id="hover-and-modifiers"
-        badge="🪄 GESTURES"
+        badge="GESTURES"
         badgeColor="cyan"
         title="Hover, Coordinates & Modifiers"
-        description="Simulate mouse hover to reveal tooltips, Shift/Ctrl click modifiers, and coordinate clicks."
-        playwrightCode={`// 1. Mouse hover
-await page.getByTestId('hover-target').hover();
-await expect(page.getByTestId('secret-tooltip')).toBeVisible();
-
-// 2. Click with Shift or Control modifier
-await page.getByTestId('modifier-click-btn').click({ modifiers: ['Shift'] });
-await expect(page.getByTestId('modifier-pill')).toContainText('Shift');
-
-// 3. Click with specific coordinates
-await page.getByTestId('coords-zone').click({ position: { x: 50, y: 30 } });
-await expect(page.getByTestId('coords-display')).toBeVisible();`}
-        playwrightTip="Playwright supports { modifiers: ['Shift', 'Control'] } directly in click()."
+        description="Verify mouse hover tooltips, modifier key detection (Shift, Ctrl, Alt), and coordinate reporting."
       >
         <div className="space-y-4">
           <div className="relative">
@@ -208,7 +179,7 @@ await expect(page.getByTestId('coords-display')).toBeVisible();`}
               onMouseLeave={() => setIsHovered(false)}
               className="p-3 bg-[#161B26] border border-slate-700 rounded-lg text-center cursor-pointer hover:border-[#00BBF9] transition-all"
             >
-              <span className="text-xs font-mono text-slate-300">Hover over me for top-secret alpha 🔮</span>
+              <span className="text-xs font-mono text-slate-300">Hover over this element to view tooltip</span>
             </div>
             {isHovered && (
               <div
@@ -216,7 +187,7 @@ await expect(page.getByTestId('coords-display')).toBeVisible();`}
                 className="mt-2 p-2 bg-[#00BBF9] text-black font-mono font-bold text-xs rounded-lg shadow-brutal flex items-center justify-center gap-1"
               >
                 <Sparkles className="w-4 h-4" />
-                <span>Playwright is low-key GOATed with the sauce!</span>
+                <span>Tooltip activated: Component status verified</span>
               </div>
             )}
           </div>
@@ -253,10 +224,10 @@ await expect(page.getByTestId('coords-display')).toBeVisible();`}
             >
               {clickCoords ? (
                 <span data-testid="coords-display" className="text-[#00F5D4]">
-                  Clicked at: X: {clickCoords.x}px, Y: {clickCoords.y}px
+                  Recorded Coordinates: X: {clickCoords.x}px, Y: {clickCoords.y}px
                 </span>
               ) : (
-                'Click anywhere to record (X, Y) coords'
+                'Click anywhere to record (X, Y) coordinates'
               )}
             </div>
           </div>
@@ -266,22 +237,16 @@ await expect(page.getByTestId('coords-display')).toBeVisible();`}
       {/* 3. Drag and Drop Kanban */}
       <ChallengeCard
         id="drag-and-drop"
-        badge="📦 DRAG & DROP"
+        badge="DRAG & DROP"
         badgeColor="yellow"
-        title="Kanban Drag & Drop"
-        description="Move items across Kanban columns using dragTo or manual mousedown, mousemove, mouseup."
-        playwrightCode={`// Method 1: Using dragTo() helper
-await page.getByTestId('card-Cook E2E Tests')
-  .dragTo(page.getByTestId('column-progress'));
-
-await expect(page.getByTestId('column-progress')).toContainText('Cook E2E Tests');`}
-        playwrightTip="locator.dragTo(targetLocator) handles scrolling, hovering, and realistic mouse movements automatically."
+        title="Kanban Drag & Drop Board"
+        description="Transfer tasks across workflow columns using drag-and-drop actions."
       >
         <div className="grid grid-cols-3 gap-2">
           {[
             { id: 'todo', label: 'To Do', color: 'border-yellow-500/40' },
-            { id: 'progress', label: 'Cooking', color: 'border-[#00BBF9]/40' },
-            { id: 'done', label: 'Shipped', color: 'border-[#00F5D4]/40' }
+            { id: 'progress', label: 'In Progress', color: 'border-[#00BBF9]/40' },
+            { id: 'done', label: 'Completed', color: 'border-[#00F5D4]/40' }
           ].map(col => (
             <div
               key={col.id}
@@ -314,30 +279,18 @@ await expect(page.getByTestId('column-progress')).toContainText('Cook E2E Tests'
       {/* 4. Canvas Drawing Pad */}
       <ChallengeCard
         id="canvas-gesture"
-        badge="🎨 CANVAS"
+        badge="CANVAS"
         badgeColor="green"
         title="HTML5 Canvas Drawing"
-        description="Verify mouse down, move, and up interactions on 2D HTML5 canvas elements."
-        playwrightCode={`// Drawing a signature line on canvas
-const canvas = page.getByTestId('draw-canvas');
-const box = await canvas.boundingBox();
-
-if (box) {
-  await page.mouse.move(box.x + 20, box.y + 20);
-  await page.mouse.down();
-  await page.mouse.move(box.x + 100, box.y + 80);
-  await page.mouse.up();
-}
-await expect(page.getByTestId('canvas-drawn-badge')).toBeVisible();`}
-        playwrightTip="For canvas, page.mouse.move(), down(), and up() allow you to simulate any freehand gesture."
+        description="Verify mouse down, move, and up drawing interactions on HTML5 2D canvas elements."
       >
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-mono text-slate-400">Draw below:</span>
+            <span className="text-xs font-mono text-slate-400">Signature Pad:</span>
             <div className="flex items-center gap-2">
               {hasDrawn && (
                 <span data-testid="canvas-drawn-badge" className="text-[11px] font-mono text-[#00F5D4] bg-[#00F5D4]/10 px-2 py-0.5 rounded border border-[#00F5D4]/30">
-                  Drawn ✅
+                  Drawing Recorded ✅
                 </span>
               )}
               <button

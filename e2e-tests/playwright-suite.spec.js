@@ -1,7 +1,7 @@
 // @ts-check
 const { test, expect } = require('@playwright/test');
 
-test.describe('Playwright Gen Z Arena - Master Automation Suite', () => {
+test.describe('Automation Testing Arena - E2E Verification Suite', () => {
 
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
@@ -11,8 +11,8 @@ test.describe('Playwright Gen Z Arena - Master Automation Suite', () => {
   test('Form Controls: Inputs & Password Toggle', async ({ page }) => {
     // Fill text input and verify echo
     const userInput = page.getByTestId('input-username');
-    await userInput.fill('karthik_qa_god');
-    await expect(page.getByTestId('username-echo')).toContainText('karthik_qa_god');
+    await userInput.fill('karthik_qa_lead');
+    await expect(page.getByTestId('username-echo')).toContainText('karthik_qa_lead');
 
     // Password input and show/hide toggle
     const passInput = page.getByTestId('input-password');
@@ -22,8 +22,8 @@ test.describe('Playwright Gen Z Arena - Master Automation Suite', () => {
     await expect(passInput).toHaveAttribute('type', 'text');
 
     // Textarea and character counter
-    await page.getByTestId('textarea-bio').fill('Writing clean Playwright tests fr fr');
-    await expect(page.getByTestId('char-counter')).toContainText('35 / 120');
+    await page.getByTestId('textarea-bio').fill('Automating testing scenarios with precision');
+    await expect(page.getByTestId('char-counter')).toContainText('43 / 120');
   });
 
   // 2. Sliders, Switches & Radios
@@ -31,11 +31,11 @@ test.describe('Playwright Gen Z Arena - Master Automation Suite', () => {
     // Slider
     const slider = page.getByTestId('slider-rizz');
     await slider.fill('90');
-    await expect(page.getByTestId('rizz-badge')).toHaveText('90% RIZZ');
+    await expect(page.getByTestId('rizz-badge')).toHaveText('90% RATING');
 
     // Custom Switch
     await page.getByTestId('toggle-switch').click();
-    await expect(page.getByTestId('toggle-status')).toHaveText('MAINFRAME OVERCLOCKED');
+    await expect(page.getByTestId('toggle-status')).toHaveText('FLAG_STATUS_ACTIVE');
 
     // Radio
     await page.getByTestId('radio-delulu').check();
@@ -53,14 +53,14 @@ test.describe('Playwright Gen Z Arena - Master Automation Suite', () => {
     await expect(page.getByTestId('form-error-alert')).toBeVisible();
 
     // 2. Fill valid values
-    await page.getByTestId('form-input-email').fill('based.tester@genz.io');
-    await page.getByTestId('form-input-age').fill('22');
+    await page.getByTestId('form-input-email').fill('tester@enterprise.com');
+    await page.getByTestId('form-input-age').fill('25');
     await page.getByTestId('form-checkbox-agree').check();
 
     // 3. Submit successfully
     await page.getByTestId('btn-submit-form').click();
     await expect(page.getByTestId('form-success-banner')).toBeVisible();
-    await expect(page.getByTestId('form-success-banner')).toContainText('RIZZ CERTIFIED');
+    await expect(page.getByTestId('form-success-banner')).toContainText('VALIDATION PASSED');
   });
 
   // 4. Double Click & Right Click Context Menu
@@ -75,7 +75,7 @@ test.describe('Playwright Gen Z Arena - Master Automation Suite', () => {
 
     // Select context menu action
     await page.getByTestId('menu-item-rizz').click();
-    await expect(page.getByTestId('context-action-result')).toContainText('Mega Rizz Activated');
+    await expect(page.getByTestId('context-action-result')).toContainText('Parameters Boosted');
   });
 
   // 5. Hover & Modifier Keys
@@ -91,11 +91,11 @@ test.describe('Playwright Gen Z Arena - Master Automation Suite', () => {
 
   // 6. Drag and Drop Kanban
   test('Drag and Drop: Move Kanban card to Progress column', async ({ page }) => {
-    const card = page.getByTestId('card-Cook E2E Tests');
+    const card = page.getByTestId('card-Develop E2E Suite');
     const targetCol = page.getByTestId('column-progress');
 
     await card.dragTo(targetCol);
-    await expect(targetCol).toContainText('Cook E2E Tests');
+    await expect(targetCol).toContainText('Develop E2E Suite');
   });
 
   // 7. Auto-Waiting & Delayed Appearance
@@ -105,14 +105,14 @@ test.describe('Playwright Gen Z Arena - Master Automation Suite', () => {
 
     // Auto-waits up to 5s for appearance
     await expect(page.getByTestId('delayed-element-target')).toBeVisible({ timeout: 5000 });
-    await expect(page.getByTestId('delayed-element-target')).toContainText('RIZZ LOADED');
+    await expect(page.getByTestId('delayed-element-target')).toContainText('DATA LOADED IN DOM');
   });
 
   // 8. Native Dialogs: window.alert and window.confirm
   test('Dialogs: Intercept native alert and confirm', async ({ page }) => {
     // Alert listener
     page.once('dialog', async dialog => {
-      expect(dialog.message()).toContain('No Cap');
+      expect(dialog.message()).toContain('System Notification');
       await dialog.accept();
     });
     await page.getByTestId('btn-native-alert').click();
@@ -122,7 +122,7 @@ test.describe('Playwright Gen Z Arena - Master Automation Suite', () => {
       await dialog.accept();
     });
     await page.getByTestId('btn-native-confirm').click();
-    await expect(page.getByTestId('confirm-result-display')).toContainText('NUKED');
+    await expect(page.getByTestId('confirm-result-display')).toContainText('Confirmed: Record Deleted');
   });
 
   // 9. Accessible Modal & Nested Modal
@@ -185,9 +185,9 @@ test.describe('Playwright Gen Z Arena - Master Automation Suite', () => {
 
   // 13. Open Shadow DOM Piercing
   test('Shadow DOM: Auto-pierce open shadow root', async ({ page }) => {
-    await page.getByTestId('open-shadow-input').fill('Piercing Shadow DOM');
+    await page.getByTestId('open-shadow-input').fill('Testing Shadow Boundary');
     await page.getByTestId('open-shadow-btn').click();
-    await expect(page.getByTestId('open-shadow-output')).toContainText('Pierced Successfully!');
+    await expect(page.getByTestId('open-shadow-output')).toContainText('Verified Successfully!');
   });
 
   // 14. Network Interception & Mocking
@@ -197,7 +197,7 @@ test.describe('Playwright Gen Z Arena - Master Automation Suite', () => {
         status: 200,
         contentType: 'application/json',
         body: JSON.stringify({
-          data: { title: 'MOCKED_IN_E2E_TEST', slangScore: 999 }
+          data: { title: 'MOCKED_IN_E2E_TEST', status: 'verified' }
         })
       });
     });
@@ -207,13 +207,13 @@ test.describe('Playwright Gen Z Arena - Master Automation Suite', () => {
   });
 
   // 15. Authentication & Storage
-  test('Auth: Sign in to VIP Penthouse and inspect cookies', async ({ page }) => {
-    await page.getByTestId('auth-input-username').fill('gigachad');
+  test('Auth: Sign in to Admin Portal and inspect cookies', async ({ page }) => {
+    await page.getByTestId('auth-input-username').fill('admin_karthik');
     await page.getByTestId('auth-input-password').fill('secretpassword123');
     await page.getByTestId('btn-auth-login').click();
     await expect(page.getByTestId('protected-vip-chamber')).toBeVisible();
 
     const cookies = await page.context().cookies();
-    expect(cookies.some(c => c.name === 'user_rizz_role')).toBeTruthy();
+    expect(cookies.some(c => c.name === 'user_auth_role')).toBeTruthy();
   });
 });

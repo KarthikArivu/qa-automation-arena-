@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { ChallengeCard } from '../components/ChallengeCard';
-import { ArrowUpDown, Trash2, Edit2, Plus, Check } from 'lucide-react';
+import { ArrowUpDown, Trash2, Plus } from 'lucide-react';
 
 interface CreatorRow {
   id: string;
@@ -11,13 +11,13 @@ interface CreatorRow {
 }
 
 const initialData: CreatorRow[] = [
-  { id: '1', handle: '@kai_cenat', rizzRating: 98, cloutTier: 'Legendary', verified: true },
-  { id: '2', handle: '@ishowspeed', rizzRating: 94, cloutTier: 'Legendary', verified: true },
-  { id: '3', handle: '@sigma_coder', rizzRating: 88, cloutTier: 'Epic', verified: false },
-  { id: '4', handle: '@mewing_champion', rizzRating: 75, cloutTier: 'Rare', verified: false },
-  { id: '5', handle: '@delulu_queen', rizzRating: 62, cloutTier: 'Uncommon', verified: false },
-  { id: '6', handle: '@skibidi_toilet', rizzRating: 99, cloutTier: 'Mythic', verified: true },
-  { id: '7', handle: '@touch_grass_dev', rizzRating: 82, cloutTier: 'Epic', verified: true },
+  { id: '1', handle: '@karthik_arivu', rizzRating: 99, cloutTier: 'Lead Architect', verified: true },
+  { id: '2', handle: '@ishowspeed', rizzRating: 94, cloutTier: 'Enterprise Admin', verified: true },
+  { id: '3', handle: '@sigma_coder', rizzRating: 88, cloutTier: 'Senior Engineer', verified: false },
+  { id: '4', handle: '@qa_specialist', rizzRating: 85, cloutTier: 'SDET Specialist', verified: true },
+  { id: '5', handle: '@devops_runner', rizzRating: 78, cloutTier: 'DevOps Engineer', verified: false },
+  { id: '6', handle: '@frontend_pro', rizzRating: 91, cloutTier: 'Senior Frontend', verified: true },
+  { id: '7', handle: '@system_architect', rizzRating: 96, cloutTier: 'Staff Architect', verified: true },
 ];
 
 export const TablesModule: React.FC = () => {
@@ -85,8 +85,8 @@ export const TablesModule: React.FC = () => {
     const item: CreatorRow = {
       id: String(Date.now()),
       handle: newHandle.startsWith('@') ? newHandle : `@${newHandle}`,
-      rizzRating: Number(newRizz) || 70,
-      cloutTier: 'Epic',
+      rizzRating: Number(newRizz) || 80,
+      cloutTier: 'Engineer',
       verified: true
     };
     setData([item, ...data]);
@@ -96,27 +96,10 @@ export const TablesModule: React.FC = () => {
   return (
     <ChallengeCard
       id="tables-and-grids"
-      badge="📊 DATA GRIDS"
+      badge="DATA GRID"
       badgeColor="cyan"
-      title="Dynamic Data Tables & Grids"
-      description="Assert table row counts, sort headers, filter columns, toggle pagination, and delete rows."
-      playwrightCode={`// 1. Search filter
-await page.getByTestId('input-table-search').fill('speed');
-await expect(page.getByTestId('table-row-2')).toBeVisible();
-await expect(page.getByTestId('table-rows-container')).toContainText('@ishowspeed');
-
-// 2. Sort column by Rizz Rating
-await page.getByTestId('sort-header-rizz').click();
-
-// 3. Select Row and Delete
-await page.getByTestId('row-checkbox-3').check();
-await page.getByTestId('btn-delete-row-3').click();
-await expect(page.getByTestId('table-row-3')).toBeHidden();
-
-// 4. Pagination
-await page.getByTestId('btn-next-page').click();
-await expect(page.getByTestId('current-page-badge')).toHaveText('2');`}
-      playwrightTip="Target specific cells using page.locator('table tr').filter({ hasText: '@ishowspeed' }).locator('td')."
+      title="Dynamic Records Table & Pagination"
+      description="Filter records, sort by column, manage batch row selection, paginate, and delete items."
     >
       <div className="space-y-4">
         {/* Controls row */}
@@ -124,10 +107,10 @@ await expect(page.getByTestId('current-page-badge')).toHaveText('2');`}
           <input
             type="text"
             data-testid="input-table-search"
-            placeholder="Search handle (e.g. @kai)..."
+            placeholder="Search handle (e.g. @karthik or @ishowspeed)..."
             value={searchTerm}
             onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1); }}
-            className="w-full sm:w-60 bg-[#161B26] border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#00BBF9]"
+            className="w-full sm:w-64 bg-[#161B26] border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#00BBF9]"
           />
 
           {/* Add Row Form */}
@@ -135,7 +118,7 @@ await expect(page.getByTestId('current-page-badge')).toHaveText('2');`}
             <input
               type="text"
               data-testid="input-new-handle"
-              placeholder="@new_creator"
+              placeholder="@new_handle"
               value={newHandle}
               onChange={(e) => setNewHandle(e.target.value)}
               className="bg-[#161B26] border border-slate-700 rounded px-2 py-1 text-xs text-white w-32 focus:outline-none"
@@ -171,7 +154,7 @@ await expect(page.getByTestId('current-page-badge')).toHaveText('2');`}
                   className="p-3 cursor-pointer hover:text-white"
                 >
                   <div className="flex items-center gap-1">
-                    <span>Creator</span>
+                    <span>Account Handle</span>
                     <ArrowUpDown className="w-3 h-3 text-slate-500" />
                   </div>
                 </th>
@@ -181,11 +164,11 @@ await expect(page.getByTestId('current-page-badge')).toHaveText('2');`}
                   className="p-3 cursor-pointer hover:text-white"
                 >
                   <div className="flex items-center gap-1">
-                    <span>Rizz Rating</span>
+                    <span>Performance Score</span>
                     <ArrowUpDown className="w-3 h-3 text-slate-500" />
                   </div>
                 </th>
-                <th className="p-3">Clout Tier</th>
+                <th className="p-3">Access Tier</th>
                 <th className="p-3 text-right">Actions</th>
               </tr>
             </thead>
@@ -193,7 +176,7 @@ await expect(page.getByTestId('current-page-badge')).toHaveText('2');`}
               {paginatedData.length === 0 ? (
                 <tr>
                   <td colSpan={5} className="p-4 text-center text-slate-500 font-mono">
-                    No creators found matching criteria.
+                    No records found matching criteria.
                   </td>
                 </tr>
               ) : (

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ChallengeCard } from '../components/ChallengeCard';
-import { Command, Search, ArrowRight, CornerDownLeft, Sparkles } from 'lucide-react';
+import { Search, CornerDownLeft } from 'lucide-react';
 
 export const KeyboardA11yModule: React.FC = () => {
   const [paletteOpen, setPaletteOpen] = useState(false);
@@ -33,26 +33,14 @@ export const KeyboardA11yModule: React.FC = () => {
       {/* 1. Hotkeys & Command Palette */}
       <ChallengeCard
         id="keyboard-shortcuts"
-        badge="⌨️ HOTKEYS"
+        badge="SHORTCUTS"
         badgeColor="yellow"
-        title="Global Shortcuts (Ctrl+K) & Palette"
-        description="Trigger global keyboard shortcuts using page.keyboard.press() and assert focus trap."
-        playwrightCode={`// 1. Press hotkey combo Ctrl+K
-await page.keyboard.press('Control+KeyK');
-await expect(page.getByTestId('command-palette-modal')).toBeVisible();
-
-// 2. Type inside palette and press Enter
-await page.getByTestId('command-palette-input').fill('Deploy');
-await page.keyboard.press('Enter');
-
-// 3. Assert command execution
-await expect(page.getByTestId('palette-command-result'))
-  .toContainText('Deploy To Vercel');`}
-        playwrightTip="Use page.keyboard.press('Control+KeyK') or page.keyboard.press('Meta+KeyK') for keyboard shortcuts."
+        title="Global Command Palette (Ctrl+K)"
+        description="Verify global keyboard shortcuts (Ctrl+K / Cmd+K), focus management, and key navigation."
       >
         <div className="space-y-4">
           <div className="flex items-center justify-between p-3 bg-[#161B26] rounded-lg border border-slate-800">
-            <span className="text-xs text-slate-300">Press hotkey:</span>
+            <span className="text-xs text-slate-300">Keyboard Combination:</span>
             <div className="flex items-center gap-1 font-mono text-xs bg-black/60 px-2 py-1 rounded border border-slate-700">
               <span className="text-yellow-400">Ctrl</span> + <span className="text-yellow-400">K</span>
             </div>
@@ -61,7 +49,7 @@ await expect(page.getByTestId('palette-command-result'))
               onClick={() => setPaletteOpen(true)}
               className="btn-neo-yellow text-xs py-1 px-3"
             >
-              Open via Click
+              Open Palette
             </button>
           </div>
 
@@ -88,7 +76,7 @@ await expect(page.getByTestId('palette-command-result'))
                     type="text"
                     autoFocus
                     data-testid="command-palette-input"
-                    placeholder="Type command and press Enter (e.g. Deploy)..."
+                    placeholder="Type command and press Enter (e.g. Export)..."
                     value={commandQuery}
                     onChange={(e) => setCommandQuery(e.target.value)}
                     onKeyDown={(e) => {
@@ -104,10 +92,10 @@ await expect(page.getByTestId('palette-command-result'))
 
                 <div className="p-2 max-h-48 overflow-y-auto space-y-1">
                   {[
-                    'Deploy To Vercel Fast',
-                    'Run Playwright E2E Suite',
+                    'Export System Analytics Data',
+                    'Run Automated Health Check',
                     'Toggle Dark / Light Theme',
-                    'Reset All Challenge States'
+                    'Reset User Preferences'
                   ]
                     .filter(c => c.toLowerCase().includes(commandQuery.toLowerCase()))
                     .map(cmd => (
@@ -134,22 +122,10 @@ await expect(page.getByTestId('palette-command-result'))
       {/* 2. ARIA Live & Tab Focus */}
       <ChallengeCard
         id="a11y-focus-tab"
-        badge="♿ A11Y & FOCUS"
+        badge="ACCESSIBILITY"
         badgeColor="cyan"
-        title="Focus Order & Live Regions"
-        description="Verify tab navigation order with toBeFocused() and assert ARIA live announcements."
-        playwrightCode={`// 1. Tab navigation order
-await page.getByTestId('tab-input-1').focus();
-await expect(page.getByTestId('tab-input-1')).toBeFocused();
-
-await page.keyboard.press('Tab');
-await expect(page.getByTestId('tab-input-2')).toBeFocused();
-
-// 2. ARIA Live region
-await page.getByTestId('btn-trigger-announcement').click();
-await expect(page.getByTestId('aria-live-status'))
-  .toHaveText('System status updated to 100% Aura');`}
-        playwrightTip="Use toBeFocused() to verify keyboard accessibility without mouse clicks."
+        title="Sequential Tab Focus & Live Regions"
+        description="Verify tab navigation order with focus indicators and test dynamic ARIA live announcements."
       >
         <div className="space-y-4">
           <div>
@@ -159,21 +135,21 @@ await expect(page.getByTestId('aria-live-status'))
                 type="text"
                 tabIndex={1}
                 data-testid="tab-input-1"
-                placeholder="Tab 1"
+                placeholder="Field 1"
                 className="bg-[#161B26] border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#00BBF9] focus:ring-1 focus:ring-[#00BBF9]"
               />
               <input
                 type="text"
                 tabIndex={2}
                 data-testid="tab-input-2"
-                placeholder="Tab 2"
+                placeholder="Field 2"
                 className="bg-[#161B26] border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#00BBF9] focus:ring-1 focus:ring-[#00BBF9]"
               />
               <input
                 type="text"
                 tabIndex={3}
                 data-testid="tab-input-3"
-                placeholder="Tab 3"
+                placeholder="Field 3"
                 className="bg-[#161B26] border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#00BBF9] focus:ring-1 focus:ring-[#00BBF9]"
               />
             </div>
@@ -182,10 +158,10 @@ await expect(page.getByTestId('aria-live-status'))
           <div>
             <button
               data-testid="btn-trigger-announcement"
-              onClick={() => triggerLiveAnnouncement('System status updated to 100% Aura')}
+              onClick={() => triggerLiveAnnouncement('System status updated: All services verified')}
               className="btn-neo-cyan text-xs py-1.5 px-3 mb-2"
             >
-              Dispatch Screen Reader Alert 📢
+              Trigger Live Announcement 📢
             </button>
 
             {/* ARIA Live Region */}

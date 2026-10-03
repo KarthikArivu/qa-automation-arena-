@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { ChallengeCard } from '../components/ChallengeCard';
-import { Lock, Unlock, Key, Cookie, Database, LogOut } from 'lucide-react';
+import { Lock, Unlock, Database, LogOut } from 'lucide-react';
 
 export const AuthAndStorageModule: React.FC = () => {
-  const [username, setUsername] = useState('gigachad');
+  const [username, setUsername] = useState('admin_karthik');
   const [password, setPassword] = useState('secretpassword123');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [authError, setAuthError] = useState('');
@@ -36,21 +36,21 @@ export const AuthAndStorageModule: React.FC = () => {
     e.preventDefault();
     setAuthError('');
 
-    if (username === 'gigachad' && password === 'secretpassword123') {
-      localStorage.setItem('auth_token', 'jwt_rizz_token_999');
+    if (username === 'admin_karthik' && password === 'secretpassword123') {
+      localStorage.setItem('auth_token', 'jwt_secure_auth_token_999');
       sessionStorage.setItem('session_active', 'true');
-      document.cookie = 'user_rizz_role=vip_tester; path=/; max-age=3600; SameSite=Lax';
+      document.cookie = 'user_auth_role=system_admin; path=/; max-age=3600; SameSite=Lax';
       setIsLoggedIn(true);
       refreshStorage();
     } else {
-      setAuthError('Invalid credentials! Only certified gigachads allowed.');
+      setAuthError('Invalid credentials. Please verify your username and password.');
     }
   };
 
   const handleLogout = () => {
     localStorage.removeItem('auth_token');
     sessionStorage.removeItem('session_active');
-    document.cookie = 'user_rizz_role=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    document.cookie = 'user_auth_role=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
     setIsLoggedIn(false);
     refreshStorage();
   };
@@ -58,38 +58,19 @@ export const AuthAndStorageModule: React.FC = () => {
   return (
     <ChallengeCard
       id="auth-and-storage"
-      badge="🔐 GATEKEPT"
+      badge="AUTHENTICATION"
       badgeColor="purple"
       title="Authentication, Cookies & Browser Storage"
-      description="Practice login flows, storage inspection, session state persistence, and Playwright storageState()."
-      playwrightCode={`// 1. Perform login
-await page.getByTestId('auth-input-username').fill('gigachad');
-await page.getByTestId('auth-input-password').fill('secretpassword123');
-await page.getByTestId('btn-auth-login').click();
-
-// 2. Assert VIP protected chamber
-await expect(page.getByTestId('protected-vip-chamber')).toBeVisible();
-
-// 3. Inspect cookies & localStorage in Playwright
-const cookies = await page.context().cookies();
-expect(cookies.some(c => c.name === 'user_rizz_role')).toBeTruthy();
-
-// 4. Save storage state for reuse in other tests!
-await page.context().storageState({ path: 'storageState.json' });
-
-// 5. Logout
-await page.getByTestId('btn-auth-logout').click();
-await expect(page.getByTestId('auth-login-form')).toBeVisible();`}
-      playwrightTip="Use test.use({ storageState: 'storageState.json' }) to bypass repeating logins in every test!"
+      description="Verify login authentication workflows, session storage persistence, and cookie headers."
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Left: Login Form or VIP Chamber */}
+        {/* Left: Login Form or Admin Chamber */}
         <div>
           {!isLoggedIn ? (
             <form onSubmit={handleLogin} data-testid="auth-login-form" className="space-y-3">
               <div className="flex items-center gap-2 mb-2">
                 <Lock className="w-4 h-4 text-[#FF4365]" />
-                <span className="text-xs font-mono font-bold text-white uppercase">Protected Member Gate</span>
+                <span className="text-xs font-mono font-bold text-white uppercase">Protected Admin Gateway</span>
               </div>
 
               <div>
@@ -125,7 +106,7 @@ await expect(page.getByTestId('auth-login-form')).toBeVisible();`}
                 data-testid="btn-auth-login"
                 className="btn-neo-purple w-full py-2 text-xs bg-[#7B2CBF] text-white hover:bg-[#6a24a6] border-2 border-black rounded shadow-brutal font-bold"
               >
-                Sign In to VIP Penthouse 🔑
+                Sign In to Dashboard 🔑
               </button>
             </form>
           ) : (
@@ -133,7 +114,7 @@ await expect(page.getByTestId('auth-login-form')).toBeVisible();`}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Unlock className="w-5 h-5 text-[#00F5D4]" />
-                  <h4 className="font-bold text-sm text-[#00F5D4]">VIP Executive Penthouse</h4>
+                  <h4 className="font-bold text-sm text-[#00F5D4]">Executive Admin Portal</h4>
                 </div>
                 <button
                   data-testid="btn-auth-logout"
@@ -145,7 +126,7 @@ await expect(page.getByTestId('auth-login-form')).toBeVisible();`}
                 </button>
               </div>
               <p className="text-xs text-slate-300">
-                Welcome back, <strong className="text-white font-mono">{username}</strong>! Your JWT auth token is persisted in <code>localStorage</code> and session cookie is active.
+                Welcome, <strong className="text-white font-mono">{username}</strong>. Session verified. Authentication token is persisted in <code>localStorage</code> and session cookie is active.
               </p>
             </div>
           )}

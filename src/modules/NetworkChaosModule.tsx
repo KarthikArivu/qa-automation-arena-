@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { ChallengeCard } from '../components/ChallengeCard';
-import { Globe, WifiOff, AlertOctagon, CheckCircle2, Clock } from 'lucide-react';
+import { WifiOff, AlertOctagon, Clock } from 'lucide-react';
 
 export const NetworkChaosModule: React.FC = () => {
-  const [statusCode, setStatusCode] = useState<number>(200);
   const [responseOutput, setResponseOutput] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
   const [flakyAttempts, setFlakyAttempts] = useState(0);
@@ -23,8 +22,6 @@ export const NetworkChaosModule: React.FC = () => {
     }
 
     try {
-      // We actually call fetch to /sample-data.json or a custom route
-      // which Playwright's page.route() can intercept!
       const res = await fetch(`/sample-data.json?simulate_status=${codeToSimulate}`, {
         headers: { 'Accept': 'application/json' }
       });
@@ -37,15 +34,15 @@ export const NetworkChaosModule: React.FC = () => {
         const json = await res.json();
         setResponseOutput(`HTTP 200 OK: ${JSON.stringify(json.data)}`);
       } else if (codeToSimulate === 201) {
-        setResponseOutput(`HTTP 201 CREATED: Resource successfully minted on chain!`);
+        setResponseOutput(`HTTP 201 CREATED: Resource successfully registered.`);
       } else if (codeToSimulate === 400) {
-        setResponseOutput(`HTTP 400 BAD REQUEST: "Bro what is that payload?"`);
+        setResponseOutput(`HTTP 400 BAD REQUEST: Request payload validation failed.`);
       } else if (codeToSimulate === 401) {
-        setResponseOutput(`HTTP 401 UNAUTHORIZED: Missing Gen Z VIP token`);
+        setResponseOutput(`HTTP 401 UNAUTHORIZED: Missing or invalid authentication token.`);
       } else if (codeToSimulate === 404) {
-        setResponseOutput(`HTTP 404 NOT FOUND: Vibe not found in this universe`);
+        setResponseOutput(`HTTP 404 NOT FOUND: Requested resource not found.`);
       } else if (codeToSimulate === 500) {
-        setResponseOutput(`HTTP 500 INTERNAL SERVER ERROR: Backend caught fire 🔥`);
+        setResponseOutput(`HTTP 500 INTERNAL SERVER ERROR: Upstream server fault.`);
       }
     } catch (err: any) {
       setResponseOutput(`FETCH FAILED: ${err.message}`);
@@ -63,9 +60,9 @@ export const NetworkChaosModule: React.FC = () => {
     setTimeout(() => {
       setIsLoading(false);
       if (nextAttempt < 3) {
-        setResponseOutput(`FLAKY FAIL (Attempt ${nextAttempt}/3): 503 Service Unavailable`);
+        setResponseOutput(`REQUEST FAILED (Attempt ${nextAttempt}/3): 503 Service Unavailable`);
       } else {
-        setResponseOutput(`FLAKY SUCCESS (Attempt ${nextAttempt}/3): 200 OK - Third time is the charm!`);
+        setResponseOutput(`REQUEST SUCCEEDED (Attempt ${nextAttempt}/3): 200 OK`);
         setFlakyAttempts(0);
       }
     }, 800);
@@ -76,29 +73,13 @@ export const NetworkChaosModule: React.FC = () => {
       {/* 1. Status Codes & Route Mocking */}
       <ChallengeCard
         id="network-mocking"
-        badge="🌐 INTERCEPTION"
+        badge="API STATUS"
         badgeColor="pink"
-        title="Mock API Requests & Status Codes"
-        description="Intercept HTTP requests using page.route() to mock 200, 404, 500 status codes and custom JSON payloads."
-        playwrightCode={`// Intercept request to /sample-data.json
-await page.route('**/sample-data.json*', async route => {
-  // Return custom mocked response!
-  await route.fulfill({
-    status: 200,
-    contentType: 'application/json',
-    body: JSON.stringify({
-      data: { title: 'MOCKED FROM PLAYWRIGHT', slangScore: 999 }
-    })
-  });
-});
-
-await page.getByTestId('btn-status-200').click();
-await expect(page.getByTestId('api-response-box'))
-  .toContainText('MOCKED FROM PLAYWRIGHT');`}
-        playwrightTip="Use page.route() to simulate server crashes (500) or slow networks without touching backend code."
+        title="HTTP Status Codes & Interception"
+        description="Verify handling of 200, 201, 400, 401, 404, and 500 HTTP server responses."
       >
         <div className="space-y-3">
-          <label className="text-xs font-mono text-slate-300 block">Select Status Code to Dispatch:</label>
+          <label className="text-xs font-mono text-slate-300 block">Dispatch Status Code Request:</label>
           <div className="grid grid-cols-3 gap-2">
             {[
               { code: 200, label: '200 OK', color: 'btn-neo-green' },
@@ -132,23 +113,10 @@ await expect(page.getByTestId('api-response-box'))
       {/* 2. Latency & Flaky Requests */}
       <ChallengeCard
         id="network-latency-flaky"
-        badge="⚡ CHAOS"
+        badge="RESILIENCE"
         badgeColor="yellow"
-        title="Simulated Latency & Flaky APIs"
-        description="Handle slow network responses using page.waitForResponse() and retry flaky endpoints."
-        playwrightCode={`// 1. Wait for specific API response concurrently
-const [response] = await Promise.all([
-  page.waitForResponse(res => res.url().includes('sample-data') && res.status() === 200),
-  page.getByTestId('btn-slow-network').click()
-]);
-
-expect(response.ok()).toBeTruthy();
-
-// 2. Offline Mode
-await page.context().setOffline(true);
-await page.getByTestId('btn-status-200').click();
-await expect(page.getByTestId('api-response-box')).toContainText('ERR_INTERNET_DISCONNECTED');`}
-        playwrightTip="Combine page.waitForResponse() with Promise.all() to prevent race conditions during async fetches."
+        title="Simulated Latency & Flaky Endpoints"
+        description="Verify asynchronous response handling under simulated network latency and retry policies."
       >
         <div className="space-y-3">
           <div className="flex flex-wrap gap-2">
@@ -169,7 +137,7 @@ await expect(page.getByTestId('api-response-box')).toContainText('ERR_INTERNET_D
               className="btn-neo-cyan text-xs py-1.5 px-3 flex items-center gap-1.5"
             >
               <AlertOctagon className="w-3.5 h-3.5" />
-              <span>Flaky API (Attempts: {flakyAttempts})</span>
+              <span>Flaky Request (Attempt: {flakyAttempts})</span>
             </button>
           </div>
 
@@ -177,7 +145,7 @@ await expect(page.getByTestId('api-response-box')).toContainText('ERR_INTERNET_D
             <div className="flex items-center gap-2">
               <WifiOff className={`w-4 h-4 ${isSimulatedOffline ? 'text-[#FF4365]' : 'text-slate-400'}`} />
               <span className="text-xs font-mono text-slate-300">
-                Offline Mode Toggle: <span className="font-bold text-white">{isSimulatedOffline ? 'OFFLINE' : 'ONLINE'}</span>
+                Network Status: <span className="font-bold text-white">{isSimulatedOffline ? 'OFFLINE' : 'ONLINE'}</span>
               </span>
             </div>
             <button
@@ -187,7 +155,7 @@ await expect(page.getByTestId('api-response-box')).toContainText('ERR_INTERNET_D
                 isSimulatedOffline ? 'bg-[#FF4365] text-white border-black' : 'bg-slate-800 text-slate-300 border-slate-700'
               }`}
             >
-              {isSimulatedOffline ? 'Go Online' : 'Go Offline'}
+              {isSimulatedOffline ? 'Set Online' : 'Set Offline'}
             </button>
           </div>
         </div>

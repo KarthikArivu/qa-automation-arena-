@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ChallengeCard } from '../components/ChallengeCard';
-import { Loader2, Sparkles, RefreshCw } from 'lucide-react';
+import { Loader2, RefreshCw } from 'lucide-react';
 
 export const AsyncAndWaitingModule: React.FC = () => {
   // Delayed Appearance
@@ -15,20 +15,12 @@ export const AsyncAndWaitingModule: React.FC = () => {
   const [countdown, setCountdown] = useState<number | null>(null);
   const [buttonEnabled, setButtonEnabled] = useState(false);
 
-  // Progress Bar
-  const [progress, setProgress] = useState(0);
-  const [progressRunning, setProgressRunning] = useState(false);
-
-  // Skeleton Loader
-  const [skeletonLoading, setSkeletonLoading] = useState(false);
-  const [skeletonData, setSkeletonData] = useState<{ title: string; desc: string } | null>(null);
-
   // Infinite Scroll
   const [feedItems, setFeedItems] = useState<string[]>([
-    'POV: You wrote your first Playwright locator',
-    'Bro thinks manual testing is faster 💀',
-    'When your selector survives a UI refactor 🗿',
-    'No cap, auto-waiting changed my life fr fr'
+    'Record #101: System event logged and verified',
+    'Record #102: Background worker completed sync',
+    'Record #103: Asynchronous job queue processed',
+    'Record #104: Network response handled successfully'
   ]);
   const feedScrollRef = useRef<HTMLDivElement | null>(null);
 
@@ -69,40 +61,6 @@ export const AsyncAndWaitingModule: React.FC = () => {
     }
   }, [countdown]);
 
-  // Trigger Progress
-  const triggerProgress = () => {
-    setProgress(0);
-    setProgressRunning(true);
-  };
-
-  useEffect(() => {
-    if (!progressRunning) return;
-    const interval = setInterval(() => {
-      setProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setProgressRunning(false);
-          return 100;
-        }
-        return prev + 20;
-      });
-    }, 400);
-    return () => clearInterval(interval);
-  }, [progressRunning]);
-
-  // Trigger Skeleton
-  const triggerSkeleton = () => {
-    setSkeletonLoading(true);
-    setSkeletonData(null);
-    setTimeout(() => {
-      setSkeletonLoading(false);
-      setSkeletonData({
-        title: 'Certified Alpha Test Asset',
-        desc: 'Fetched asynchronously from the serverless edge with 0ms cold start.'
-      });
-    }, 2000);
-  };
-
   // Infinite scroll listener
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
@@ -110,8 +68,8 @@ export const AsyncAndWaitingModule: React.FC = () => {
       // Append more items
       setFeedItems(prev => [
         ...prev,
-        `Meme Card #${prev.length + 1}: Playwright locator.waitFor() hits different`,
-        `Meme Card #${prev.length + 2}: Flaky test disappeared into the ether`
+        `Record #${prev.length + 101}: Dynamically loaded record upon scroll`,
+        `Record #${prev.length + 102}: Real-time pagination stream chunk`
       ]);
     }
   };
@@ -121,17 +79,10 @@ export const AsyncAndWaitingModule: React.FC = () => {
       {/* 1. Delayed Element Appearance */}
       <ChallengeCard
         id="delayed-appearance"
-        badge="⏱️ AUTO-WAIT"
+        badge="AUTO-WAIT"
         badgeColor="green"
         title="Delayed Element Appearance"
-        description="Simulate asynchronous DOM mounting. Test Playwright's automatic retry and waiting mechanisms."
-        playwrightCode={`// Click button to start 2.5s timer
-await page.getByTestId('btn-trigger-delayed').click();
-
-// Playwright auto-waits up to default timeout (30s) for toBeVisible!
-await expect(page.getByTestId('delayed-element-target')).toBeVisible({ timeout: 5000 });
-await expect(page.getByTestId('delayed-element-target')).toContainText('RIZZ LOADED');`}
-        playwrightTip="Never use arbitrary page.waitForTimeout(3000)! Playwright assertions auto-wait and poll automatically."
+        description="Verify dynamic DOM mounting with simulated asynchronous latency."
       >
         <div className="space-y-4">
           <button
@@ -155,7 +106,7 @@ await expect(page.getByTestId('delayed-element-target')).toContainText('RIZZ LOA
                 data-testid="delayed-element-target"
                 className="w-full p-2.5 bg-[#00F5D4]/20 border border-[#00F5D4] rounded text-center text-xs font-mono text-[#00F5D4] font-bold animate-fadeIn"
               >
-                ✨ RIZZ LOADED IN DOM fr fr!
+                ✨ DATA LOADED IN DOM SUCCESSFULLY
               </div>
             )}
             {!isAppearing && !hasAppeared && (
@@ -168,18 +119,10 @@ await expect(page.getByTestId('delayed-element-target')).toContainText('RIZZ LOA
       {/* 2. Disappearing Element / Spinners */}
       <ChallengeCard
         id="disappearing-spinner"
-        badge="👻 DETACHMENT"
+        badge="DETACHMENT"
         badgeColor="pink"
         title="Disappearing Spinners & Loaders"
-        description="Assert that an element is currently in the DOM and then disappears or becomes hidden."
-        playwrightCode={`// 1. Trigger spinner
-await page.getByTestId('btn-start-spinner').click();
-await expect(page.getByTestId('active-spinner')).toBeVisible();
-
-// 2. Wait for it to disappear from the DOM
-await expect(page.getByTestId('active-spinner')).toBeHidden({ timeout: 5000 });
-await expect(page.getByTestId('spinner-done-badge')).toBeVisible();`}
-        playwrightTip="toBeHidden() asserts that the element either has display:none/visibility:hidden or is removed from the DOM."
+        description="Assert that a temporary loading element disappears or is removed from the DOM."
       >
         <div className="space-y-4">
           <button
@@ -195,7 +138,7 @@ await expect(page.getByTestId('spinner-done-badge')).toBeVisible();`}
             {spinnerActive && (
               <div data-testid="active-spinner" className="flex items-center gap-2 text-xs font-mono text-[#FF4365]">
                 <RefreshCw className="w-4 h-4 animate-spin" />
-                <span>Heavy payload processing...</span>
+                <span>Processing data payload...</span>
               </div>
             )}
             {spinnerFinished && !spinnerActive && (
@@ -216,20 +159,10 @@ await expect(page.getByTestId('spinner-done-badge')).toBeVisible();`}
       {/* 3. Attribute Mutation (Disabled -> Enabled) */}
       <ChallengeCard
         id="attribute-change"
-        badge="⏳ STATE"
+        badge="STATE MUTATION"
         badgeColor="yellow"
         title="Dynamic Attribute State"
-        description="Buttons or inputs transitioning from disabled to enabled after timed countdowns."
-        playwrightCode={`// 1. Start countdown
-await page.getByTestId('btn-start-countdown').click();
-
-// 2. Button is disabled initially
-await expect(page.getByTestId('btn-staggered-action')).toBeDisabled();
-
-// 3. Auto-waits until enabled
-await expect(page.getByTestId('btn-staggered-action')).toBeEnabled({ timeout: 6000 });
-await page.getByTestId('btn-staggered-action').click();`}
-        playwrightTip="toBeEnabled() automatically retries until the disabled attribute is removed or false."
+        description="Verify element attribute state transitions from disabled to enabled after timed countdowns."
       >
         <div className="space-y-4">
           <div className="flex items-center justify-between">
@@ -248,14 +181,14 @@ await page.getByTestId('btn-staggered-action').click();`}
           <button
             data-testid="btn-staggered-action"
             disabled={!buttonEnabled}
-            onClick={() => alert('VIP Action Executed!')}
+            onClick={() => alert('Action Executed Successfully')}
             className={`w-full py-2.5 rounded-lg font-bold text-xs border-2 transition-all ${
               buttonEnabled
                 ? 'bg-[#00F5D4] text-black border-black cursor-pointer shadow-brutal'
                 : 'bg-slate-800 text-slate-500 border-slate-700 cursor-not-allowed'
             }`}
           >
-            {buttonEnabled ? '🚀 VIP Claim Button (Ready!)' : '🔒 Button Disabled'}
+            {buttonEnabled ? '🚀 Authorized Action Button (Ready)' : '🔒 Action Button Disabled'}
           </button>
         </div>
       </ChallengeCard>
@@ -263,17 +196,10 @@ await page.getByTestId('btn-staggered-action').click();`}
       {/* 4. Infinite Scroll Feed */}
       <ChallengeCard
         id="infinite-scroll"
-        badge="📜 SCROLL"
+        badge="SCROLL FEED"
         badgeColor="purple"
         title="Infinite Scroll Container"
-        description="Scroll containers to trigger dynamic lazy loading and assert newly appended elements."
-        playwrightCode={`// Scroll down the infinite container
-const scrollBox = page.getByTestId('infinite-scroll-box');
-await scrollBox.evaluate(node => node.scrollTop = node.scrollHeight);
-
-// Assert newly loaded item exists
-await expect(page.getByTestId('feed-item-4')).toBeVisible();`}
-        playwrightTip="Use locator.scrollIntoViewIfNeeded() or element.evaluate() to trigger scroll listeners."
+        description="Scroll containers to trigger dynamic lazy loading and assert newly appended records."
       >
         <div
           ref={feedScrollRef}
@@ -291,7 +217,7 @@ await expect(page.getByTestId('feed-item-4')).toBeVisible();`}
             </div>
           ))}
           <div className="text-center text-[10px] text-slate-500 font-mono py-1">
-            ⬇️ Scroll down inside box to load more cards...
+            ⬇️ Scroll down inside container to load more records...
           </div>
         </div>
       </ChallengeCard>

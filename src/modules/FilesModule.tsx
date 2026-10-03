@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ChallengeCard } from '../components/ChallengeCard';
-import { UploadCloud, FileText, Download, Check, Trash2 } from 'lucide-react';
+import { UploadCloud, FileText, Download, Check } from 'lucide-react';
 
 export const FilesModule: React.FC = () => {
   // Upload states
@@ -36,10 +36,10 @@ export const FilesModule: React.FC = () => {
   const triggerDynamicDownload = () => {
     const element = document.createElement('a');
     const file = new Blob([
-      `=== GEN Z DYNAMIC CERTIFICATE ===\nIssued to: Playwright Chad\nStatus: 100% E2E AUTOMATED\nVerified: NO CAP\n`
+      `=== AUTOMATED VERIFICATION REPORT ===\nAuthor: Karthik Arivu\nStatus: 100% E2E VERIFIED\nTimestamp: ${new Date().toISOString()}\n`
     ], { type: 'text/plain' });
     element.href = URL.createObjectURL(file);
-    element.download = 'playwright-dynamic-cert.txt';
+    element.download = 'automated-verification-report.txt';
     document.body.appendChild(element);
     element.click();
     document.body.removeChild(element);
@@ -51,34 +51,15 @@ export const FilesModule: React.FC = () => {
       {/* 1. File Uploads */}
       <ChallengeCard
         id="file-uploads"
-        badge="📁 UPLOAD"
+        badge="FILE UPLOAD"
         badgeColor="green"
         title="File Uploads (Single & Multi)"
-        description="Upload files using locator.setInputFiles() without needing an OS file chooser dialog."
-        playwrightCode={`// 1. Single file upload
-await page.getByTestId('input-single-file')
-  .setInputFiles({
-    name: 'secret-sauce.txt',
-    mimeType: 'text/plain',
-    buffer: Buffer.from('Ultra secret rizz recipe')
-  });
-
-await expect(page.getByTestId('single-file-result')).toContainText('secret-sauce.txt');
-
-// 2. Multiple files upload
-await page.getByTestId('input-multi-file')
-  .setInputFiles([
-    { name: 'test1.txt', mimeType: 'text/plain', buffer: Buffer.from('file 1') },
-    { name: 'test2.txt', mimeType: 'text/plain', buffer: Buffer.from('file 2') }
-  ]);
-
-await expect(page.getByTestId('multi-files-list')).toContainText('test1.txt');`}
-        playwrightTip="Playwright allows passing an object with { name, mimeType, buffer } directly, so you don't even need files on disk!"
+        description="Verify single and multiple file inputs as well as drag-and-drop file upload zones."
       >
         <div className="space-y-4">
           <div>
             <label className="block text-xs font-mono text-slate-300 mb-1">
-              Single File:
+              Single File Attachment:
             </label>
             <input
               type="file"
@@ -96,7 +77,7 @@ await expect(page.getByTestId('multi-files-list')).toContainText('test1.txt');`}
 
           <div>
             <label className="block text-xs font-mono text-slate-300 mb-1">
-              Multi-File Selector:
+              Multi-File Attachment:
             </label>
             <input
               type="file"
@@ -131,10 +112,10 @@ await expect(page.getByTestId('multi-files-list')).toContainText('test1.txt');`}
             <div className="text-xs font-mono text-slate-300">
               {dropFileName ? (
                 <span data-testid="dropzone-file-name" className="text-[#00F5D4] font-bold">
-                  Dropped: {dropFileName}
+                  Received: {dropFileName}
                 </span>
               ) : (
-                'Drop files right here'
+                'Drag and drop files directly here'
               )}
             </div>
           </div>
@@ -144,27 +125,14 @@ await expect(page.getByTestId('multi-files-list')).toContainText('test1.txt');`}
       {/* 2. File Downloads */}
       <ChallengeCard
         id="file-downloads"
-        badge="💾 DOWNLOAD"
+        badge="DOWNLOAD"
         badgeColor="yellow"
-        title="File Downloads Interception"
-        description="Capture file downloads, inspect suggested filenames, and save files to disk."
-        playwrightCode={`// 1. Listen for download event concurrently
-const [download] = await Promise.all([
-  page.waitForEvent('download'),
-  page.getByTestId('btn-download-static').click()
-]);
-
-// 2. Assert suggested filename
-expect(download.suggestedFilename()).toBe('sample-download.txt');
-
-// 3. Save downloaded file
-const path = await download.path();
-console.log('Saved to:', path);`}
-        playwrightTip="Use download.saveAs(path) to persist the file to a specified directory during testing."
+        title="File Download Triggers"
+        description="Trigger and verify static and dynamically generated file downloads."
       >
         <div className="space-y-4">
           <p className="text-xs text-slate-400">
-            Clicking these buttons triggers native browser file downloads:
+            Clicking these actions triggers browser file download streams:
           </p>
 
           <div className="flex flex-col gap-3">
@@ -175,7 +143,7 @@ console.log('Saved to:', path);`}
               className="btn-neo-yellow text-xs py-2 px-4 flex items-center justify-center gap-2"
             >
               <Download className="w-4 h-4" />
-              <span>Download Official Receipt (.txt)</span>
+              <span>Download Verification Record (.txt)</span>
             </a>
 
             <button
@@ -184,7 +152,7 @@ console.log('Saved to:', path);`}
               className="btn-neo-cyan text-xs py-2 px-4 flex items-center justify-center gap-2"
             >
               <Download className="w-4 h-4" />
-              <span>Generate Dynamic Blob Certificate</span>
+              <span>Generate Dynamic Text Report</span>
             </button>
           </div>
 
@@ -193,7 +161,7 @@ console.log('Saved to:', path);`}
               data-testid="download-triggered-badge"
               className="p-2.5 bg-[#00F5D4]/10 border border-[#00F5D4] rounded text-xs font-mono text-[#00F5D4] flex items-center justify-between"
             >
-              <span>✅ Dynamic download triggered!</span>
+              <span>✅ Dynamic download triggered successfully!</span>
               <Check className="w-4 h-4" />
             </div>
           )}
