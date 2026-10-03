@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color-scheme: dark;
+}
+
+body {
+  background-color: #080A10;
+  color: #F8FAFC;
+  overflow-x: hidden;
+}
+
+code, pre, .font-mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Neo-brutalist button base */
+.btn-neo {
+  @apply relative inline-flex items-center justify-center font-bold px-4 py-2 border-2 border-black rounded-lg transition-all duration-150 active:translate-x-1 active:translate-y-1 select-none cursor-pointer;
+  box-shadow: 3px 3px 0px #000000;
+}
+
+.btn-neo:active {
+  box-shadow: 0px 0px 0px #000000;
+}
+
+.btn-neo-pink {
+  @apply btn-neo bg-[#FF4365] text-white hover:bg-[#ff2a51];
+  box-shadow: 4px 4px 0px #000;
+}
+
+.btn-neo-green {
+  @apply btn-neo bg-[#00F5D4] text-black hover:bg-[#00dfc1];
+  box-shadow: 4px 4px 0px #000;
+}
+
+.btn-neo-yellow {
+  @apply btn-neo bg-[#FEE440] text-black hover:bg-[#ffd60a];
+  box-shadow: 4px 4px 0px #000;
+}
+
+.btn-neo-cyan {
+  @apply btn-neo bg-[#00BBF9] text-black hover:bg-[#00a6dd];
+  box-shadow: 4px 4px 0px #000;
+}
+
+.btn-neo-dark {
+  @apply btn-neo bg-[#1E293B] text-white border-slate-700 hover:bg-[#334155];
+  box-shadow: 4px 4px 0px #0F172A;
+}
+
+/* Card base */
+.card-neo {
+  @apply bg-[#111625] border-2 border-slate-800 rounded-xl p-5 transition-all duration-200;
+  box-shadow: 5px 5px 0px #05070D;
+}
+
+.card-neo:hover {
+  @apply border-slate-700;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0D111C;
+}
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #00F5D4;
+}

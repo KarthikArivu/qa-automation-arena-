@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Meme Vault Popup</title>
+  <style>
+    body {
+      background: #09090b;
+      color: #fafafa;
+      font-family: system-ui, sans-serif;
+      padding: 24px;
+      text-align: center;
+    }
+    .badge {
+      background: #FF4365;
+      color: white;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-weight: bold;
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+    button {
+      background: #00F5D4;
+      color: #000;
+      border: 2px solid #000;
+      padding: 10px 18px;
+      font-weight: bold;
+      font-size: 15px;
+      cursor: pointer;
+      border-radius: 6px;
+      box-shadow: 4px 4px 0 #000;
+    }
+  </style>
+</head>
+<body>
+  <div data-testid="popup-content-wrapper">
+    <div class="badge" data-testid="popup-badge">NEW TAB DETECTED ⚡</div>
+    <h2 id="popup-heading" data-testid="popup-heading">Welcome to the Secret Popup Vault</h2>
+    <p>This is a separate browser tab or window spawned via <code>window.open()</code> or <code>target="_blank"</code>.</p>
+    <button id="popup-confirm-btn" data-testid="popup-confirm-btn" onclick="document.getElementById('popup-state').innerText = 'POPUP_VERIFIED_SUCCESSFULLY'">Verify Tab Context</button>
+    <p id="popup-state" data-testid="popup-state" style="margin-top: 16px; font-weight: bold; color: #FEE440;">Pending Verification</p>
+  </div>
+</body>
+</html>

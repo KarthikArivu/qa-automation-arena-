@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Nested Child Frame</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #18181b;
+      color: #fafafa;
+      padding: 10px;
+      margin: 0;
+    }
+    button {
+      background: #FEE440;
+      color: #000;
+      font-weight: bold;
+      border: 2px solid #000;
+      padding: 6px 12px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div data-testid="nested-child-container">
+    <h5 style="margin: 0 0 6px 0; color: #FEE440;">🎯 Deeply Nested Child Frame (Level 2)</h5>
+    <p style="font-size: 12px; margin: 0 0 8px 0;">Playwright selector: <code>page.frameLocator('#nested-parent-frame').frameLocator('#child-nested-frame')</code></p>
+    <button id="deep-action-btn" data-testid="deep-action-btn" onclick="toggleDeepStatus()">Activate Matrix</button>
+    <p id="deep-status-text" data-testid="deep-status-text" style="font-family: monospace; font-size: 13px; color: #a1a1aa; margin-top: 6px;">Status: Inactive</p>
+  </div>
+
+  <script>
+    function toggleDeepStatus() {
+      const el = document.getElementById('deep-status-text');
+      el.innerText = 'Status: RIZZ_ACTIVATED_IN_THE_MATRIX 🔥';
+      el.style.color = '#00F5D4';
+    }
+  </script>
+</body>
+</html>
