@@ -22,7 +22,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div>
             <div className="flex items-center gap-2">
               <span className="font-extrabold text-base sm:text-lg tracking-tight text-white font-display">
-                AUTOMATION <span className="text-[#00F5D4]">TEST</span> ARENA
+                Web Automation <span className="text-[#00F5D4]">Testing Arena</span>
               </span>
               <span className="text-[10px] font-mono font-bold bg-[#00BBF9] text-black px-2 py-0.5 rounded-full border border-black shadow-sm">
                 E2E BENCHMARK
