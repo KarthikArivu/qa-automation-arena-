@@ -1,4 +1,4 @@
-# ⚡ Automation Testing Arena
+# ⚡ QA Automation Arena
 
 > **Created by Dev: Karthik Arivu 👑**  
 > A comprehensive, modern web application engineered specifically for mastering **JavaScript & TypeScript Playwright** end-to-end automation testing.

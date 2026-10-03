@@ -146,7 +146,7 @@ export const App: React.FC = () => {
           </div>
 
           <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white font-display mb-3">
-            Web Automation <span className="text-[#00F5D4] underline decoration-wavy decoration-[#00BBF9]">Testing Arena</span>
+            QA Automation <span className="text-[#00F5D4] underline decoration-wavy decoration-[#00BBF9]">Arena</span>
           </h1>
           <p className="text-sm sm:text-base text-slate-300 max-w-2xl leading-relaxed mb-6">
             A comprehensive, interactive web application engineered specifically for end-to-end automation testing. Covers advanced form validation, mouse gestures, dynamic async loading, dialogs, iframes, file transfers, and accessibility compliance. Built by <strong className="text-[#00F5D4] font-bold">Karthik Arivu</strong>.
@@ -207,7 +207,7 @@ export const App: React.FC = () => {
       <footer className="border-t border-slate-800 bg-[#06080E] py-6 px-4 text-center text-xs font-mono text-slate-400">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex items-center gap-2">
-            <span>Web Automation Testing Arena &bull; Developed by <strong className="text-[#00F5D4] font-bold">Karthik Arivu</strong> ⚡</span>
+            <span>QA Automation Arena &bull; Developed by <strong className="text-[#00F5D4] font-bold">Karthik Arivu</strong> ⚡</span>
           </div>
           <div className="flex items-center gap-4 text-slate-400">
             <span>Automated Test Bed</span>
