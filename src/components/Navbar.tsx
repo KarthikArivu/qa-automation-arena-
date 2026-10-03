@@ -52,6 +52,16 @@ export const Navbar: React.FC<NavbarProps> = ({
             />
           </div>
 
+          {/* Developer Credit Badge */}
+          <div
+            data-testid="dev-credit-badge"
+            className="flex items-center gap-1.5 px-2.5 py-1 bg-[#161B26] border-2 border-black rounded-lg shadow-brutal font-mono text-[11px] whitespace-nowrap"
+          >
+            <span className="text-slate-400">Dev:</span>
+            <span className="text-[#00F5D4] font-bold">Karthik Arivu</span>
+            <span className="text-[10px]">👑</span>
+          </div>
+
           {/* Master Test Suite Modal button */}
           <button
             onClick={onOpenSuiteModal}

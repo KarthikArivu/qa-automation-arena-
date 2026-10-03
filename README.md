@@ -1,5 +1,6 @@
 # ⚡ PLAYWRIGHT RIZZ LAB (The Ultimate Gen Z E2E Arena)
 
+> **Created by Dev: Karthik Arivu 👑**  
 > **No Cap, Pure Automation.** A high-voltage, neo-brutalist testing ground engineered specifically for mastering **JavaScript & TypeScript Playwright**. Ready for 1-click zero-config deployment to **Vercel**.
 
 ---

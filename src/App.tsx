@@ -144,6 +144,9 @@ export const App: React.FC = () => {
             <span className="text-xs font-mono font-bold bg-[#FF4365]/15 text-[#FF4365] border border-[#FF4365]/30 px-2.5 py-0.5 rounded-full">
               VERCEL ZERO-CONFIG DEPLOY
             </span>
+            <span className="text-xs font-mono font-bold bg-[#7B2CBF]/20 text-[#c77dff] border border-[#7B2CBF]/40 px-2.5 py-0.5 rounded-full flex items-center gap-1">
+              <span>👑 DEV: KARTHIK ARIVU</span>
+            </span>
             <span className="text-xs font-mono font-bold bg-[#FEE440]/15 text-[#FEE440] border border-[#FEE440]/30 px-2.5 py-0.5 rounded-full">
               ALL LOCATORS & ASSERTIONS INCLUDED
             </span>
@@ -153,7 +156,7 @@ export const App: React.FC = () => {
             Level Up Your <span className="text-[#00F5D4] underline decoration-wavy decoration-[#FF4365]">Playwright</span> Rizz
           </h1>
           <p className="text-sm sm:text-base text-slate-300 max-w-2xl leading-relaxed mb-6">
-            Tired of boring, antique demo sites with 2005 tables? This is the definitive, high-voltage arena covering every single challenge you'll ever face in JavaScript / TypeScript Playwright automation.
+            Tired of boring, antique demo sites with 2005 tables? Built by <strong className="text-[#00F5D4] font-bold">Karthik Arivu</strong>, this is the definitive, high-voltage arena covering every single challenge you'll ever face in JavaScript / TypeScript Playwright automation.
           </p>
 
           {/* Quick CLI Banner */}
@@ -244,7 +247,7 @@ export const App: React.FC = () => {
       <footer className="border-t border-slate-800 bg-[#06080E] py-6 px-4 text-center text-xs font-mono text-slate-400">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex items-center gap-2">
-            <span>Built with pure Gen Z energy & Playwright automation power.</span>
+            <span>Built with pure Gen Z energy & Playwright automation power by <strong className="text-[#00F5D4] font-bold">Karthik Arivu</strong> ⚡</span>
           </div>
           <div className="flex items-center gap-4 text-slate-400">
             <span>Vercel Optimized ⚡</span>
